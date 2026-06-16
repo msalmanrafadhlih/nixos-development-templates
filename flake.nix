@@ -10,7 +10,7 @@
       devShells = import ./devShells.nix inputs;
 
       # inputs.nixdev.devenvModules.<template>
-      devenvModules = ./devenv.nix ;
+      devenvModules = import ./devenv.nix ;
     };
 
   inputs = {
