@@ -17,7 +17,7 @@
   enterShell = ''
     echo ""
     echo "================================================================"
-    echo "  ⚡ SELAMAT DATANG DI LINGKUNGAN PENGEMBANGAN JS ⚡"
+    echo "   SELAMAT DATANG DI LINGKUNGAN PENGEMBANGAN JS "
     echo "================================================================"
     echo "  Node.js  : $(node --version)"
     echo "  pnpm     : $(pnpm --version)"
@@ -33,8 +33,8 @@
     echo "    pnpm start     - jalankan production server"
     echo "    pnpm lint      - cek linting"
     echo ""
-    echo "💡 Catatan NixOS: Semua dependensi terisolasi di folder ini."
-    echo "   Jangan gunakan 'npm install -g' atau merusak sistem global Anda."
+    echo "  Catatan NixOS: Semua dependensi terisolasi di folder ini."
+    echo "  Jangan gunakan 'npm install -g' atau merusak sistem global Anda."
     echo "================================================================"
     echo ""
   '';
