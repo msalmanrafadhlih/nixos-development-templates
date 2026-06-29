@@ -21,6 +21,8 @@
             ./devenv.nix  
           ];
         };
+
+        devenvModules.default = import ./devenv.nix {inherit pkgs inputs;};
       }
     );
 
