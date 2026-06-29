@@ -86,5 +86,18 @@ in
       A flutter project template that comes bundled
     '';
   };
+
+  rust-basic = mkWelcomeText {
+    path = ./rust;
+    name = "Basic Rust Template";
+    description = ''
+      A Rust project template that comes bundled
+    '';
+    buildTools = [
+      "All esential rust tools"
+      "fenix"
+      "naesrk"
+    ];
+  };
 }
 // nix-templates.templates
