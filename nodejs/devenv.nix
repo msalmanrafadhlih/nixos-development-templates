@@ -1,12 +1,11 @@
-{ pkgs, ... }:
-
-{
+{ templateInputs }:
+{ pkgs, ... }: {
   languages.javascript = {
     enable = true;
-    package = pkgs.nodejs_24;  # Node.js 24 LTS
+    package = pkgs.nodejs_24; # Node.js 24 LTS
     pnpm = {
       enable = true;
-      package = pkgs.pnpm_9;   # pnpm 9 (latest stable)
+      package = pkgs.pnpm_9; # pnpm 9 (latest stable)
     };
   };
 
