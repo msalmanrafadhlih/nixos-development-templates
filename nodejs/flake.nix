@@ -66,8 +66,6 @@
           };
         };
 
-        devenvModules.default = import ./devenv.nix {inherit pkgs;};
-
         # package: untuk build production dengan Nix
         # Menggunakan pnpm.fetchDeps karena devenv juga pakai pnpm
         # nix build .#<target>
@@ -113,5 +111,8 @@
           });
         };
       }
-    );
+    )
+    // {
+      devenvModules.default = import ./devenv.nix;
+    };
 }
