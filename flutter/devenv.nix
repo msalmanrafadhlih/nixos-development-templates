@@ -1,16 +1,19 @@
-{ pkgs, inputs, ... }:
+{ templateInputs }:
+{ pkgs, ... }:
 let
   # Latest Flutter (3.29+) butuh:
   # - platforms-android-35 (Android 15)
   # - build-tools-35-0-0
   # - JDK 17 minimum, 21 direkomendasikan
-  androidSdk = inputs.android-nixpkgs.sdk.${pkgs.stdenv.hostPlatform.system} (sdkPkgs: with sdkPkgs; [
-    cmdline-tools-latest
-    platform-tools
-    platforms-android-35   # ← update dari 33
-    build-tools-35-0-0     # ← update dari 30.0.3
-    # emulator             # uncomment jika butuh emulator
-  ]);
+  androidSdk = templateInputs.android-nixpkgs.sdk.${pkgs.stdenv.hostPlatform.system} (
+    sdkPkgs: with sdkPkgs; [
+      cmdline-tools-latest
+      platform-tools
+      platforms-android-35 # ← update dari 33
+      build-tools-35-0-0 # ← update dari 30.0.3
+      # emulator             # uncomment jika butuh emulator
+    ]
+  );
 
   androidSdkSubPath = "share/android-sdk";
 in
@@ -22,12 +25,12 @@ in
   ];
 
   languages.java = {
-    enable = true;             # otomatis set JAVA_HOME
-    jdk.package = pkgs.jdk21;  # ← update ke 21 (direkomendasikan Flutter 3.29+)
+    enable = true; # otomatis set JAVA_HOME
+    jdk.package = pkgs.jdk21; # ← update ke 21 (direkomendasikan Flutter 3.29+)
   };
 
   env = rec {
-    ANDROID_HOME     = "${androidSdk}/${androidSdkSubPath}";
+    ANDROID_HOME = "${androidSdk}/${androidSdkSubPath}";
     ANDROID_SDK_ROOT = ANDROID_HOME; # deprecated tapi masih dipakai beberapa tools
   };
 
