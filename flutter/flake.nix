@@ -18,7 +18,7 @@
         devShells.default = inputs.devenv.lib.mkShell {
           inherit inputs pkgs;
           modules = [
-            ./devenv.nix
+            (import ./devenv.nix { templateInputs = inputs; })
           ];
         };
       }
