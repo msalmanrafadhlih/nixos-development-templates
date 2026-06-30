@@ -39,7 +39,9 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          config = { allowUnfree = true; };
+          config = {
+            allowUnfree = true;
+          };
         };
 
         # === ISI SEBELUM BUILD ===
@@ -95,7 +97,9 @@
         devShells = {
           default = inputs.devenv.lib.mkShell {
             inherit inputs pkgs;
-            modules = [ ./devenv.nix ];
+            modules = [
+              (import ./devenv.nix { templateInputs = inputs; })
+            ];
           };
         };
 
@@ -153,7 +157,8 @@
           });
         };
       }
-    ) // {
+    )
+    // {
       devenvModules.default = import ./devenv.nix { templateInputs = inputs; };
     };
 }
