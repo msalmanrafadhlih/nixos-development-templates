@@ -23,7 +23,6 @@
       fenix,
       naersk,
       flake-utils,
-      devenv,
       ...
     }@inputs:
     flake-utils.lib.eachDefaultSystem (
@@ -37,28 +36,23 @@
         };
 
         # Toolchain juga didefinisikan di sini untuk naersk
-        toolchain = fenix.packages.${system}.combine [
-          fenix.packages.${system}.stable.cargo
-          fenix.packages.${system}.stable.rustc
-          fenix.packages.${system}.stable.rust-src
-          fenix.packages.${system}.stable.rust-analyzer
-          fenix.packages.${system}.stable.clippy
-          fenix.packages.${system}.stable.rustfmt
-        ];
-
+        toolchain = fenix.packages.${system}.stable.toolchain;
         naerskLib = pkgs.callPackage naersk {
           cargo = toolchain;
           rustc = toolchain;
         };
       in
       {
-        devShells.default = import ./devenv.nix { inherit pkgs inputs toolchain; };
-        devenvModules.default = import ./devenv.nix { inherit toolchain pkgs inputs; };
+        devShells.default = inputs.devenv.lib.mkShell {
+          inherit inputs pkgs;
+          imports = [ ./devenv.nix ];
+        };
 
         # Build project sebagai paket Nix
-        packages.default = naerskLib.buildPackage {
-          src = ./.;
-        };
+        packages.default = naerskLib.buildPackage { src = ./.; };
       }
-    );
+    )
+    // {
+      devenvModules.default = ./devenv.nix ;
+    };
 }
