@@ -99,5 +99,16 @@ in
       "naesrk"
     ];
   };
+
+  tauri-mobile = mkWelcomeText {
+    path = ./tauri-mobile;
+    name = "Rust -- tauri-mobile Template development";
+    description = ''
+      A Rust project template that comes bundled 
+    '';
+    buildTools = [
+      "All esential rust tools"
+    ];
+  };
 }
 // nix-templates.templates
