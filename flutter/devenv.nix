@@ -30,7 +30,7 @@ in
   };
 
   env = rec {
-    ANDROID_HOME = "${androidSdk}/${androidSdkSubPath}";
+    ANDROID_HOME     = "${androidSdk}/${androidSdkSubPath}";
     ANDROID_SDK_ROOT = ANDROID_HOME; # deprecated tapi masih dipakai beberapa tools
   };
 
