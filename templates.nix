@@ -110,5 +110,16 @@ in
       "All esential rust tools"
     ];
   };
+
+  rustling = mkWelcomeText {
+    path = ./rustling;
+    name = "Rust -- learning";
+    description = ''
+      A Rust Learning bundle
+    '';
+    buildTools = [
+      "All esential rust for learning"
+    ];
+  };
 }
 // nix-templates.templates
