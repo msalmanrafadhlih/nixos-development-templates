@@ -14,7 +14,8 @@
         flutter      = inputs.flutter.devShells.${system}.default;
         nodejs       = inputs.nodejs.devShells.${system}.default;
         rust-basic   = inputs.rust.devShells.${system}.default;
-        tauri-mobile = inputs.bun.devShells.${system}.default;
+        tauri-mobile = inputs.tauri-mobile.devShells.${system}.default;
+        rustling     = inputs.rustling.devShells.${system}.default;
         bun          = inputs.bun.devShells.${system}.default;
       });
 
@@ -37,5 +38,6 @@
     bun.url           = "path:./bun";
     nodejs.url        = "path:./nodejs";
     tauri-mobile.url  = "path:./tauri-mobile";
+    rustling.url      = "path:./rustling";
   };
 }
