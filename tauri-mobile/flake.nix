@@ -70,10 +70,10 @@
             src = lib.fileset.toSource {
               root = ./.;
               fileset = lib.fileset.unions [
-                ./packages.json
+                ./package.json
                 ./bun.lock
                 ./tsconfig.json
-                ./vite.config.ts
+                ./astro.config.mjs
                 ./index.html
                 ./public
                 ./src
