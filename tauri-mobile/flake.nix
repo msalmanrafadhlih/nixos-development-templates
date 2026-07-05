@@ -33,7 +33,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
-    rust.url = "github:msalmanrafadhlih/nix.templates/main?dir=rust";
+    rust.url = "github:msalmanrafadhlih/nixos-development-templates/main?dir=rust";
 
     flake-utils = {
       url = "github:numtide/flake-utils";
