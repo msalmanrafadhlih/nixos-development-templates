@@ -57,6 +57,10 @@ in
       librsvg
       at-spi2-atk
       glib-networking
+
+      gdk-pixbuf
+      cairo
+      dbus
     ]
     ++ lib.optional (!useNixpkgs) androidSdk;
 
@@ -66,8 +70,8 @@ in
     GREET = "Tauri + React + Tailwind (Bun) — Mobile Dev";
   }
   // lib.optionalAttrs (!useNixpkgs) {
-    ANDROID_HOME = lib.mkIf "${androidSdk}/share/android-sdk";
-    ANDROID_NDK_ROOT = lib.mkIf "${androidSdk}/share/android-sdk/ndk/26.1.10909125";
+    ANDROID_HOME = "${androidSdk}/share/android-sdk";
+    ANDROID_NDK_ROOT = "${androidSdk}/share/android-sdk/ndk/26.1.10909125";
   }
   // {
     ANDROID_SDK_ROOT = config.env.ANDROID_HOME;
@@ -81,6 +85,10 @@ in
         at-spi2-atk
         glib
         openssl
+
+        gdk-pixbuf
+        cairo
+        dbus
       ]
     );
   };
