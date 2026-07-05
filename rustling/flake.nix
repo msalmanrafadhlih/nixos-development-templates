@@ -4,32 +4,33 @@
   inputs = {
     nixpkgs.follows = "root-flake/nixpkgs";
     flake-utils.follows = "root-flake/flake-utils";
-    devenv.url = "github:cachix/devenv";
+    rust = "github:msalmanrafadhlih/nixos-development-templates/main?dir=rust";
   };
 
   outputs =
     {
       nixpkgs,
-      devenv,
       flake-utils,
       ...
     }@inputs:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs {
+          inherit system;
+        };
       in
       {
-        devShells.default = devenv.lib.mkShell {
+        devShells.default = inputs.devenv.lib.mkShell {
           inherit inputs pkgs;
-
           modules = [
+            inputs.rust.devenvModules.default
+            (import ./devenv.nix { templateInputs = inputs; })
             ({ pkgs, ... }: {
               packages = [
                 pkgs.rustlings
               ];
             })
-            ./devenv.nix
           ];
         };
       }
