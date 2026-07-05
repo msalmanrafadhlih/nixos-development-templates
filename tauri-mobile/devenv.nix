@@ -2,11 +2,12 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }:
 let
   useNixpkgs = true;
-  androidSdk = templateInputs.android-nixpkgs.sdk.${pkgs.system} (
+  androidSdk = templateInputs.android-nixpkgs.sdk.${pkgs.stdenv.hostPlatform.system} (
     sdkPkgs: with sdkPkgs; [
       cmdline-tools-latest
       platform-tools
@@ -61,12 +62,16 @@ in
 
   # env var yang sebelumnya di-set otomatis oleh modul `android`,
   # sekarang harus manual karena kita pakai SDK dari input lain:
-  env = rec {
-    GREET            = "Tauri + React + Tailwind (Bun) — Mobile Dev";
-    ANDROID_HOME     = lib.mkIf (!useNixpkgs) "${androidSdk}/share/android-sdk";
-    ANDROID_NDK_ROOT = lib.mkIf (!useNixpkgs) "${androidSdk}/share/android-sdk/ndk/26.1.10909125";
-    ANDROID_SDK_ROOT = ANDROID_HOME;        
-    LD_LIBRARY_PATH  = lib.makeLibraryPath (
+  env = {
+    GREET = "Tauri + React + Tailwind (Bun) — Mobile Dev";
+  }
+  // lib.optionalAttrs (!useNixpkgs) {
+    ANDROID_HOME = lib.mkIf "${androidSdk}/share/android-sdk";
+    ANDROID_NDK_ROOT = lib.mkIf "${androidSdk}/share/android-sdk/ndk/26.1.10909125";
+  }
+  // {
+    ANDROID_SDK_ROOT = config.env.ANDROID_HOME;
+    LD_LIBRARY_PATH = lib.makeLibraryPath (
       with pkgs;
       [
         webkitgtk_4_1
@@ -81,9 +86,9 @@ in
   };
 
   scripts = {
-    tauri-init.exec    = "bun create tauri-app@latest .";
-    android-init.exec  = "bun run tauri android init";
-    android-dev.exec   = "bun run tauri android dev";
+    tauri-init.exec = "bun create tauri-app@latest .";
+    android-init.exec = "bun run tauri android init";
+    android-dev.exec = "bun run tauri android dev";
     android-build.exec = "bun run tauri android build";
     make-avd.exec = ''
       avdmanager create avd --force \
