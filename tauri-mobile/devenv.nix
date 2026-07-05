@@ -6,8 +6,19 @@
   ...
 }:
 let
-  useNixpkgs = true;
-  androidSdk = templateInputs.android-nixpkgs.sdk.${pkgs.stdenv.hostPlatform.system} (
+  # Gunakan false agar kita murni memakai deklaratif Android SDK dari flake inputs
+  useNixpkgs = false;
+
+  system = pkgs.stdenv.hostPlatform.system;
+  fenix = templateInputs.rust.inputs.fenix;
+  rustToolChain = fenix.packages.${system}.combine [
+    fenix.packages.${system}.targets.aarch64-linux-android.stable.rust-std
+    fenix.packages.${system}.targets.x86_64-linux-android.stable.rust-std
+    fenix.packages.${system}.targets.armv7-linux-androideabi.stable.rust-std
+    fenix.packages.${system}.targets.i686-linux-android.stable.rust-std
+  ];
+
+  androidSdk = templateInputs.android-nixpkgs.sdk.${system} (
     sdkPkgs: with sdkPkgs; [
       cmdline-tools-latest
       platform-tools
@@ -48,6 +59,7 @@ in
   packages =
     with pkgs;
     [
+      rustToolChain
       git
       pkg-config
       openssl
@@ -75,6 +87,7 @@ in
   }
   // {
     ANDROID_SDK_ROOT = config.env.ANDROID_HOME;
+    NDK_HOME = config.env.ANDROID_NDK_ROOT;
     LD_LIBRARY_PATH = lib.makeLibraryPath (
       with pkgs;
       [
@@ -106,18 +119,33 @@ in
   };
 
   enterShell = ''
-    echo "🦀⚛️  Tauri Mobile Dev Shell aktif"
-    echo "bun       : $(bun --version)"
-    echo "cargo     : $(cargo --version)"
-    echo "adb       : $(adb --version 2>/dev/null | head -n1 || echo 'belum ada device/emulator')"
-    echo ""
-    echo "tauri-init    : bun create tauri-app@latest"
-    echo "android-init  : bun run tauri android init"
-    echo "android-dev   : bun run tauri android dev"
-    echo "android-build : bun run tauri android build"
-    echo "make-avd      : bikin emulator sekali saja"
-    if [ ! -f package.json ]; then
-      echo "Belum ada project di folder ini. Jalankan: tauri-init"
-    fi
+    _help() {
+      echo "🦀⚛ Tauri Mobile Dev Shell Aktif"
+      echo "bun       : $(bun --version 2>/dev/null || echo 'belum terinstal')"
+      echo "cargo     : $(cargo --version 2>/dev/null | awk '{print $2}' || echo 'belum terinstal')"
+      echo "rustc     : $(rustc --version 2>/dev/null | awk '{print $2}' || echo 'belum terinstal')"
+      echo "target    : aarch64-linux-android, x86_64-linux-android siap!"
+
+      if command -v adb >/dev/null 2>&1; then
+        echo "adb       : $(adb --version | grep "Android Debug Bridge" | awk '{print $5}')"
+      else
+        echo "adb       : belum terinstal (SDK Platform Tools)"
+      fi
+
+      echo ""
+      echo "Panduan Inisialisasi Cepat:"
+      echo "  1. Jalankan inisialisasi Astro frontend terlebih dahulu."
+      echo "  2. Jalankan: bun create tauri-app@latest"
+      echo "  3. Jalankan: android-init  (setup android config)"
+      echo "  4. Jalankan: make-avd      (bikin emulator AVD sekali saja)"
+      echo "  5. Jalankan: android-dev   (run app di emulator)"
+
+      if [ ! -f package.json ]; then
+        echo ""
+        echo "  Peringatan: Belum ada project di folder ini!"
+        echo "   Silakan ikuti Panduan Inisialisasi Cepat di atas."
+      fi
+    }
+    _help
   '';
 }
