@@ -18,7 +18,7 @@ let
       platform-tools
       build-tools-35-0-0
       platforms-android-35
-    ] ++  lib.optional cfg.withEmulator [
+    ] ++  lib.optionals cfg.withEmulator [
       ndk-26-1-10909125 # versi NDK spesifik, bukan "latest" yang bisa berubah-ubah
       emulator
       system-images-android-34-google-apis-playstore-x86-64
