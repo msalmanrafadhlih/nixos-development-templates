@@ -56,7 +56,7 @@ let
     };
 in
 {
-  bun = mkWelcomeText {
+  bun-template = mkWelcomeText {
     path = ./bun;
     name = "Bun Template";
     description = ''
@@ -67,7 +67,7 @@ in
     ];
   };
 
-  nodejs = mkWelcomeText {
+  nodejs-template = mkWelcomeText {
     path = ./nodejs;
     name = "Nodejs Template";
     description = ''
@@ -79,7 +79,7 @@ in
     ];
   };
 
-  flutter-nixdev = mkWelcomeText {
+  flutter-template = mkWelcomeText {
     path = ./flutter;
     name = "Flutter Template";
     description = ''
@@ -87,7 +87,7 @@ in
     '';
   };
 
-  rust-basic = mkWelcomeText {
+  rust-template = mkWelcomeText {
     path = ./rust;
     name = "Basic Rust Template";
     description = ''
