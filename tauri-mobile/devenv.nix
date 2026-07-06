@@ -6,9 +6,6 @@
   ...
 }:
 let
-  # Gunakan false agar kita murni memakai deklaratif Android SDK dari flake inputs
-  useNixpkgs = false;
-
   system = pkgs.stdenv.hostPlatform.system;
   fenix = templateInputs.rust.inputs.fenix;
   rustToolChain = fenix.packages.${system}.combine [
@@ -17,89 +14,54 @@ let
     fenix.packages.${system}.targets.armv7-linux-androideabi.stable.rust-std
     fenix.packages.${system}.targets.i686-linux-android.stable.rust-std
   ];
-
-  androidSdk = templateInputs.android-nixpkgs.sdk.${system} (
-    sdkPkgs: with sdkPkgs; [
-      cmdline-tools-latest
-      platform-tools
-      build-tools-35-0-0
-      platforms-android-35
-      ndk-26-1-10909125 # versi NDK spesifik, bukan "latest" yang bisa berubah-ubah
-      emulator
-      system-images-android-34-google-apis-playstore-x86-64
-    ]
-  );
 in
 {
-  # Gradle butuh JDK
-  languages.java.enable = true;
+  imports = [
+    templateInputs.rust.devenvModules.default
+    templateInputs.bun.devenvModules.default
+    templateInputs.android.devenvModules.default
+  ];
 
-  # === Android SDK/NDK/emulator, modul bawaan devenv ===
-  android = {
-    enable = useNixpkgs;
-    platforms.version = [ "34" ];
-    buildTools.version = [ "34.0.0" ];
-    abis = [
-      "arm64-v8a"
-      "x86_64"
-    ]; # sesuaikan kalau laptop kamu ARM
-    systemImageTypes = [ "google_apis_playstore" ];
-    ndk.enable = true;
-    googleAPIs.enable = true;
-    emulator.enable = true;
-    # android-studio.enable = true; # aktifkan kalau mau install Android Studio juga
+  setupAndroid = {
+    enable = true;
+    useNixpkgs = false;
+    withEmulator = true;
   };
 
-  packages =
+  packages = with pkgs; [
+    rustToolChain
+    git
+    bun
+    pkg-config
+    openssl
+    webkitgtk_4_1
+    gtk3
+    libsoup_3
+    librsvg
+    at-spi2-atk
+    glib-networking
+
+    gdk-pixbuf
+    cairo
+    dbus
+  ];
+
+  env.LD_LIBRARY_PATH = lib.makeLibraryPath (
     with pkgs;
     [
-      rustToolChain
-      git
-      bun
-      pkg-config
-      openssl
       webkitgtk_4_1
       gtk3
       libsoup_3
       librsvg
       at-spi2-atk
-      glib-networking
+      glib
+      openssl
 
       gdk-pixbuf
       cairo
       dbus
     ]
-    ++ lib.optional (!useNixpkgs) androidSdk;
-
-  # env var yang sebelumnya di-set otomatis oleh modul `android`,
-  # sekarang harus manual karena kita pakai SDK dari input lain:
-  env = {
-    GREET = "Tauri + React + Tailwind (Bun) — Mobile Dev";
-  }
-  // lib.optionalAttrs (!useNixpkgs) {
-    ANDROID_HOME = "${androidSdk}/share/android-sdk";
-    ANDROID_NDK_ROOT = "${androidSdk}/share/android-sdk/ndk/26.1.10909125";
-  }
-  // {
-    ANDROID_SDK_ROOT = config.env.ANDROID_HOME;
-    NDK_HOME = config.env.ANDROID_NDK_ROOT;
-    LD_LIBRARY_PATH = lib.makeLibraryPath (
-      with pkgs;
-      [
-        webkitgtk_4_1
-        gtk3
-        libsoup_3
-        librsvg
-        at-spi2-atk
-        glib
-        openssl
-
-        gdk-pixbuf
-        cairo
-        dbus
-      ]
-    );
-  };
+  );
 
   scripts = {
     tauri-init.exec = "bun create tauri-app@latest .";
