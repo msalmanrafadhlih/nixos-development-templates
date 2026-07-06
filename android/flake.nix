@@ -26,7 +26,7 @@
         pkgs = import inputs.nixpkgs {
           inherit system;
           config = {
-            android_sdk.accepr_license = true;
+            android_sdk.accept_license = true;
             allowUnfree = true;
           };
         };
@@ -36,6 +36,7 @@
           default = inputs.devenv.lib.mkShell {
             inherit inputs pkgs;
             modules = [
+              (import ./devenv.nix { templateInputs = inputs; })
             ];
           };
         };
