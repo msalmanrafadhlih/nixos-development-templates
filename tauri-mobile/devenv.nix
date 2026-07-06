@@ -31,12 +31,6 @@ let
   );
 in
 {
-
-  languages.javascript = {
-    enable = true;
-    bun.enable = true;
-  };
-
   # Gradle butuh JDK
   languages.java.enable = true;
 
@@ -61,6 +55,7 @@ in
     [
       rustToolChain
       git
+      bun
       pkg-config
       openssl
       webkitgtk_4_1
