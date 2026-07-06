@@ -23,7 +23,7 @@
     inputs.flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = import nixpkgs {
+        pkgs = import inputs.nixpkgs {
           inherit system;
           config = {
             android_sdk.accepr_license = true;
