@@ -2,21 +2,20 @@
   description = "Tauri + React + Tailwind (Bun) — Mobile Dev Template";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
-    rust.url = "github:msalmanrafadhlih/nixos-development-templates/main?dir=rust";
     crane-tauri.url = "github:JPHutchins/crane-tauri";
-    devenv.url = "github:cachix/devenv";
+
+    rust.url = "github:msalmanrafadhlih/nixos-development-templates/main?dir=rust";
+    bun.url = "github:msalmanrafadhlih/nixos-development-templates/main?dir=bun";
+    android.url = "github:msalmanrafadhlih/nixos-development-templates/main?dir=android";
 
     flake-utils = {
-      url = "github:numtide/flake-utils";
+      follows = "rust/flake-utils";
       inputs.systems.follows = "systems";
     };
 
-    android-nixpkgs = {
-      url = "github:tadfisher/android-nixpkgs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixpkgs.follows = "rust/nixpkgs";
+    devenv.follows = "rust/devenv";
   };
 
   outputs =
@@ -117,7 +116,6 @@
           default = inputs.devenv.lib.mkShell {
             inherit inputs pkgs;
             modules = [
-              inputs.rust.devenvModules.default
               (import ./devenv.nix { templateInputs = inputs; })
             ];
           };
@@ -127,15 +125,4 @@
     // {
       devenvModules.default = import ./devenv.nix { templateInputs = inputs; };
     };
-
-  nixConfig = {
-    extra-substituters = [
-      "https://devenv.cachix.org"
-      "https://nix-community.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    ];
-  };
 }
