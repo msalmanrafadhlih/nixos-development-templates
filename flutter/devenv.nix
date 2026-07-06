@@ -26,7 +26,6 @@ in
 
   languages.java = {
     enable = true; # otomatis set JAVA_HOME
-    jdk.package = pkgs.jdk21; # ← update ke 21 (direkomendasikan Flutter 3.29+)
   };
 
   env = rec {
