@@ -1,5 +1,5 @@
 {
-  description = "Tauri + React + Tailwind (Bun) — Mobile Dev Template";
+  description = "android Template";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
