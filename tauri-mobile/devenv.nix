@@ -24,8 +24,9 @@ in
 
   setupAndroid = {
     enable = true;
-    useNixpkgs = false;
-    withEmulator = true;
+    backend = "android-nixpkgs"; # atau "devenv"
+    emulator = false;
+    device = true;
   };
 
   packages = with pkgs; [
