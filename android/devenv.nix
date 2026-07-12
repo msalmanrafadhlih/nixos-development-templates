@@ -31,23 +31,23 @@ let
     ]
   );
 
-  # Paket android-udev-rules dari nixpkgs: aturan udev standar supaya
-  # `adb`/`fastboot` bisa akses device Android via USB tanpa sudo.
-  # PENTING: ini cuma bisa efektif kalau ter-install di /etc/udev/rules.d
-  # (lewat NixOS module `services.udev.packages`), bukan cuma via devshell.
-  udevRulesPkg = pkgs.android-udev-rules;
+  # CATATAN: pkgs.android-udev-rules sudah DIHAPUS dari nixpkgs (digantikan oleh
+  # systemd built-in "uaccess" tag). Sejak systemd 247+ / udev modern, device USB
+  # termasuk Android otomatis dapat akses read/write untuk user aktif di seat
+  # login (logind), tanpa perlu paket udev rules terpisah atau grup "adbusers".
+  # Jadi TIDAK ADA package tambahan yang perlu di-install di system config kamu.
+  # udevRulesPkg = pkgs.android-udev-rules;
 
   udevWarning = ''
-    echo ""
-    echo "[setupAndroid] device = true — reminder buat akses USB tanpa sudo:"
-    echo "  Devshell TIDAK BISA memasang udev rules system-wide."
-    echo "  Tambahkan ini ke konfigurasi NixOS kamu (bukan devenv.nix ini):"
-    echo ""
-    echo "    services.udev.packages = [ pkgs.android-udev-rules ];"
-    echo "    users.users.<username>.extraGroups = [ \"adbusers\" ];"
-    echo ""
-    echo "  Lalu rebuild switch & re-login. Cek dengan: adb devices"
-    echo ""
+    # echo ""
+    # echo "[setupAndroid] device = true — akses USB Android:"
+    # echo "  Sejak nixpkgs terbaru, udev rules Android sudah built-in via systemd"
+    # echo "  uaccess tag — tidak perlu setup tambahan di system config."
+    # echo "  Kalau 'adb devices' tetap kosong setelah HP dicolok:"
+    # echo "    1. Pastikan USB debugging aktif di HP (Developer options)."
+    # echo "    2. Cek popup 'Allow USB debugging?' di layar HP, tap Allow."
+    # echo "    3. Coba: adb kill-server && adb start-server && adb devices"
+    # echo ""
   '';
 in
 {
@@ -116,8 +116,7 @@ in
     packages =
       with pkgs;
       [ git ]
-      ++ lib.optional (!useNixpkgs) androidSdk
-      ++ lib.optional (cfg.device && !useNixpkgs) udevRulesPkg;
+      ++ lib.optional (!useNixpkgs) androidSdk;
 
     enterShell = lib.mkIf cfg.device udevWarning;
 
