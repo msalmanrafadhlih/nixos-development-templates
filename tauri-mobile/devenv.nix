@@ -79,9 +79,9 @@ in
   enterShell = ''
     _help() {
       echo "🦀⚛ Tauri Mobile Dev Shell Aktif"
-      echo "bun       : $(bun --version 2>/dev/null || echo 'belum terinstal')"
-      echo "cargo     : $(cargo --version 2>/dev/null | awk '{print $2}' || echo 'belum terinstal')"
-      echo "rustc     : $(rustc --version 2>/dev/null | awk '{print $2}' || echo 'belum terinstal')"
+      echo "bun       : $(bun --version 2>/dev/null || echo 'Not Found')"
+      echo "cargo     : $(cargo --version 2>/dev/null | awk '{print $2}' || echo 'Not Found')"
+      echo "rustc     : $(rustc --version 2>/dev/null | awk '{print $2}' || echo 'Not Found')"
       echo "target    : aarch64-linux-android, x86_64-linux-android siap!"
 
       if command -v adb >/dev/null 2>&1; then
@@ -92,11 +92,16 @@ in
 
       echo ""
       echo "Panduan Inisialisasi Cepat:"
-      echo "  1. Jalankan inisialisasi Astro frontend terlebih dahulu."
-      echo "  2. Jalankan: bun create tauri-app@latest"
-      echo "  3. Jalankan: android-init  (setup android config)"
-      echo "  4. Jalankan: make-avd      (bikin emulator AVD sekali saja)"
-      echo "  5. Jalankan: android-dev   (run app di emulator)"
+      echo "  1. Run inisialisasi Astro frontend terlebih dahulu."
+      echo "  2. Run: bun create tauri-app@latest"
+      echo "  3. Run: android-init  (setup android config)"
+      echo ""
+      echo "  4. only [emulator = true]:"
+      echo "     Run: make-avd   (bikin emulator AVD sekali saja)"
+      echo "     Run: adb-device (cek serial number device)"
+      echo ""
+      echo "  5. Run: android-dev                    (run app mobile) or"
+      echo "     ANDROID_SERIAL=<serial> android-dev (for spesific device)"
 
       if [ ! -f package.json ]; then
         echo ""
