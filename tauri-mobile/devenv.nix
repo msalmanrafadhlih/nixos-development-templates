@@ -31,8 +31,6 @@ in
 
   packages = with pkgs; [
     rustToolChain
-    git
-    bun
     pkg-config
     openssl
     webkitgtk_4_1
