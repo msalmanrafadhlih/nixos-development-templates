@@ -3,6 +3,7 @@
   languages.javascript = {
     enable = true;
     pnpm.enable = true;
+    nodejs.enable = true;
   };
 
   packages = with pkgs; [
