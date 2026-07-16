@@ -26,7 +26,8 @@ in {
   enterShell = ''
     echo "🦀 Rust Dev Shell (${pkgs.stdenv.hostPlatform.system})"
     echo ""
-    rustc --version
-    cargo --version
+    echo "cargo     : $(cargo --version 2>/dev/null | awk '{print $2}' || echo 'Not Found')"
+    echo "rustc     : $(rustc --version 2>/dev/null | awk '{print $2}' || echo 'Not Found')"
+    echo ""
   '';
 }
