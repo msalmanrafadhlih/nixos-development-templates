@@ -113,12 +113,18 @@ in
     };
 
     # === Backend: android-nixpkgs (SDK deklaratif dari flake input) ===
-    packages =
-      with pkgs;
-      [ git ]
-      ++ lib.optional (!useNixpkgs) androidSdk;
+    packages = with pkgs; [ git ] ++ lib.optional (!useNixpkgs) androidSdk;
 
-    enterShell = lib.mkIf cfg.device udevWarning;
+    enterShell = ''
+      if command -v adb >/dev/null 2>&1; then
+        echo "adb       : $(adb --version | grep "Android Debug Bridge" | awk '{print $5}')"
+      else
+        echo "adb       : belum terinstal (SDK Platform Tools)"
+      fi
+        echo "================================================"
+        echo ""
+      ${lib.optionalString cfg.device udevWarning}
+    '';
 
     # env var: manual kalau pakai android-nixpkgs, karena modul `android` devenv
     # yang biasanya set otomatis, tidak aktif di backend ini.
