@@ -77,16 +77,7 @@ in
   enterShell = ''
     _help() {
       echo "🦀⚛ Tauri Mobile Dev Shell Aktif"
-      echo "bun       : $(bun --version 2>/dev/null || echo 'Not Found')"
-      echo "cargo     : $(cargo --version 2>/dev/null | awk '{print $2}' || echo 'Not Found')"
-      echo "rustc     : $(rustc --version 2>/dev/null | awk '{print $2}' || echo 'Not Found')"
       echo "target    : aarch64-linux-android, x86_64-linux-android siap!"
-
-      if command -v adb >/dev/null 2>&1; then
-        echo "adb       : $(adb --version | grep "Android Debug Bridge" | awk '{print $5}')"
-      else
-        echo "adb       : belum terinstal (SDK Platform Tools)"
-      fi
 
       echo ""
       echo "Panduan Inisialisasi Cepat:"
