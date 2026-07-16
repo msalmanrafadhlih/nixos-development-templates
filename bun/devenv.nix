@@ -12,6 +12,7 @@
   languages.javascript = {
     enable = true;
     bun.enable = true;
+    nodejs.enable = true;
   };
 
   packages = with pkgs; [
@@ -24,6 +25,7 @@
     echo "   SELAMAT DATANG DI LINGKUNGAN PENGEMBANGAN BUN"
     echo "================================================================"
     echo "  Bun  : $(bun --version)"
+    echo "  Node : $(node --version)"
     echo "  Git  : $(git --version | cut -d' ' -f3)"
     echo "================================================================"
     echo ""
