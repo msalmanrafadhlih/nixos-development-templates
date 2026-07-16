@@ -2,14 +2,19 @@
 { pkgs, ... }:
 
 {
+
   # Bun adalah all-in-one toolkit:
   # ✓ Runtime JavaScript/TypeScript (seperti Node.js, tanpa perlu transpiler)
   # ✓ Package manager (pengganti npm / pnpm / yarn)
   # ✓ Bundler (pengganti webpack / esbuild / rollup)
   # ✓ Test runner (pengganti Jest / Vitest)
   # ✓ Bisa langsung jalankan file .ts tanpa konfigurasi apapun
+  languages.javascript = {
+    enable = true;
+    bun.enable = true;
+  };
+
   packages = with pkgs; [
-    bun
     git
   ];
 
