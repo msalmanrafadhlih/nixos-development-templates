@@ -11,12 +11,12 @@
   # ✓ Bisa langsung jalankan file .ts tanpa konfigurasi apapun
   languages.javascript = {
     enable = true;
-    bun.enable = true;
     nodejs.enable = true;
   };
 
   packages = with pkgs; [
     git
+    bun
   ];
 
   enterShell = ''
