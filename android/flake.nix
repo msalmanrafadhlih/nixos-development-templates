@@ -38,14 +38,14 @@
             modules = [
               (import ./devenv.nix { templateInputs = inputs; })
               # Contoh override konfigurasi setupAndroid (opsional, default sudah aman):
-              # {
-              #   setupAndroid = {
-              #     enable = true;
-              #     backend = "android-nixpkgs"; # atau "devenv"
-              #     emulator = false;
-              #     device = true;
-              #   };
-              # }
+              {
+                setupAndroid = {
+                  enable = true;
+                  backend = "android-nixpkgs"; # atau "devenv"
+                  emulator = false;
+                  device = true;
+                };
+              }
             ];
           };
         };
