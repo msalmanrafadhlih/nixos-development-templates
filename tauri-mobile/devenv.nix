@@ -2,13 +2,12 @@
 {
   pkgs,
   lib,
-  config,
   ...
 }:
 let
   system = pkgs.stdenv.hostPlatform.system;
   fenix = templateInputs.rust.inputs.fenix;
-  rustToolChain = fenix.packages.${system}.combine [
+  rustToolChain = [
     fenix.packages.${system}.targets.aarch64-linux-android.stable.rust-std
     fenix.packages.${system}.targets.x86_64-linux-android.stable.rust-std
     fenix.packages.${system}.targets.armv7-linux-androideabi.stable.rust-std
@@ -22,6 +21,11 @@ in
     templateInputs.android.devenvModules.default
   ];
 
+  setupRust = {
+    enable = true;
+    toolchains = rustToolChain;
+  };
+
   setupAndroid = {
     enable = true;
     backend = "android-nixpkgs"; # atau "devenv"
@@ -30,7 +34,6 @@ in
   };
 
   packages = with pkgs; [
-    rustToolChain
     pkg-config
     openssl
     webkitgtk_4_1
