@@ -19,13 +19,13 @@ let
     sdkPkgs:
     with sdkPkgs;
     [
+      sdkPkgs.${ndkAttr}
       cmdline-tools-latest
       platform-tools # adb, dipakai baik oleh emulator maupun device fisik via USB
       build-tools-35-0-0
       platforms-android-35
     ]
     ++ lib.optionals cfg.emulator [
-      sdkPkgs.${ndkAttr}
       emulator
       system-images-android-34-google-apis-playstore-x86-64
     ]
@@ -134,10 +134,10 @@ in
     // lib.optionalAttrs (!useNixpkgs) {
       ANDROID_HOME = "${androidSdk}/share/android-sdk";
       ANDROID_SDK_ROOT = config.env.ANDROID_HOME;
-    }
-    // lib.optionalAttrs (!useNixpkgs && cfg.emulator) {
       ANDROID_NDK_ROOT = "${config.env.ANDROID_HOME}/ndk/${ndkVersion}";
       NDK_HOME = config.env.ANDROID_NDK_ROOT;
+    }
+    // lib.optionalAttrs (!useNixpkgs && cfg.emulator) {
       ANDROID_AVD_HOME = "${config.env.DEVENV_STATE}/android-avd";
     };
   };
