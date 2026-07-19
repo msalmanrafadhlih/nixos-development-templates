@@ -23,7 +23,9 @@ let
       cmdline-tools-latest
       platform-tools # adb, dipakai baik oleh emulator maupun device fisik via USB
       build-tools-35-0-0
+      build-tools-36-0-0
       platforms-android-35
+      platforms-android-36
     ]
     ++ lib.optionals cfg.emulator [
       emulator
