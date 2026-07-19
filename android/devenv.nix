@@ -100,7 +100,7 @@ in
     android = lib.mkIf useNixpkgs {
       enable = true;
       platforms.version = [ "34" "35" "36" ];
-      buildTools.version = [ "35.0.0" ];
+      buildTools.version = [ "35.0.0" "36.0.0" ];
       abis = [
         "arm64-v8a"
         "x86_64"
