@@ -99,8 +99,8 @@ in
     # === Backend: devenv (modul android bawaan devenv, sumbernya nixpkgs) ===
     android = lib.mkIf useNixpkgs {
       enable = true;
-      platforms.version = [ "34" ];
-      buildTools.version = [ "34.0.0" ];
+      platforms.version = [ "34" "35" "36" ];
+      buildTools.version = [ "35.0.0" ];
       abis = [
         "arm64-v8a"
         "x86_64"
